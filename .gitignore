@@ -1,0 +1,32 @@
+# Azure credentials / secrets
+*.env
+*.env.*
+*.pfx
+*.pem
+*.key
+local.settings.json
+appsettings.*.json
+
+# PowerShell
+*.ps1xml
+*.psd1.bak
+
+# Bicep / ARM build output
+*.json.bak
+*.compiled.json
+
+# Editor directories
+.vscode/
+.idea/
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+*.tmp
+*.log
+tmp/
+temp/
