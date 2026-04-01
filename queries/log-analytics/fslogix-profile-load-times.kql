@@ -1,0 +1,9 @@
+// FSLogix Profile Load Times
+// Shows average and P95 profile attach duration over time
+FSLogixProfileEvent
+| where EventType == "ProfileAttach"
+| summarize
+    AvgDurationMs = avg(DurationMs),
+    P95DurationMs = percentile(DurationMs, 95)
+    by bin(TimeGenerated, 1h)
+| render timechart

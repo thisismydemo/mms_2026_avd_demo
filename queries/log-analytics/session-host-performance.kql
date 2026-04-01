@@ -1,0 +1,8 @@
+// Session Host Performance — CPU and Memory
+// Shows average CPU and memory utilization across session hosts
+Perf
+| where TimeGenerated > ago(24h)
+| where ObjectName == "Processor" and CounterName == "% Processor Time" and InstanceName == "_Total"
+    or ObjectName == "Memory" and CounterName == "% Committed Bytes In Use"
+| summarize AvgValue = avg(CounterValue) by bin(TimeGenerated, 15m), CounterName, Computer
+| render timechart

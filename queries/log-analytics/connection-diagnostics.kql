@@ -1,0 +1,11 @@
+// AVD Connection Diagnostics
+// Shows connection success/failure rates and round-trip time
+WVDConnections
+| where TimeGenerated > ago(24h)
+| summarize
+    TotalConnections = count(),
+    SuccessfulConnections = countif(State == "Connected"),
+    FailedConnections = countif(State == "Failed")
+    by bin(TimeGenerated, 1h)
+| extend SuccessRate = round(100.0 * SuccessfulConnections / TotalConnections, 1)
+| render timechart

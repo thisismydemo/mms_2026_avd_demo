@@ -1,0 +1,7 @@
+// Active Sessions by User and Host
+// Shows current session distribution
+WVDConnections
+| where TimeGenerated > ago(1h)
+| where State == "Connected"
+| summarize Sessions = count() by UserName, SessionHostName
+| order by Sessions desc

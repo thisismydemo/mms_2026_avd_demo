@@ -18,30 +18,52 @@ Azure Local lets you deploy AVD session hosts on your own on-premises hardware w
 
 ```
 mms_2026_avd_demo/
-├── README.md                        # This file
+├── README.md                            # This file
+├── Demo-Guide-AVD-Azure-Local.md        # Detailed demo guide mapped to slides
 ├── .gitignore
-├── docs/
-│   ├── 01-prerequisites.md          # Environment prerequisites
-│   ├── 02-azure-local-setup.md      # Prepare the Azure Local cluster
-│   ├── 03-avd-deployment.md         # Deploy AVD infrastructure
-│   └── 04-demo-walkthrough.md       # Step-by-step demo guide
+├── presenter/                           # Session delivery materials
+│   ├── run-of-show.md                   # Timing, flow, transition lines
+│   ├── slide-map.md                     # Slide-to-demo mapping
+│   ├── fallback-plan.md                 # Fallback strategy per demo
+│   └── day-of-checklist.md              # 30-minute pre-session checklist
+├── docs/                                # Technical documentation
+│   ├── 01-prerequisites.md              # Environment prerequisites
+│   ├── 02-azure-local-setup.md          # Prepare the Azure Local cluster
+│   ├── 03-image-pipeline.md             # Image build and replication
+│   ├── 04-avd-deployment.md             # Deploy AVD infrastructure
+│   ├── 05-fslogix.md                    # FSLogix configuration and storage
+│   ├── 06-gpu-setup.md                  # GPU-P / DDA setup and verification
+│   ├── 07-monitoring.md                 # AVD Insights, Log Analytics, cost
+│   └── 08-troubleshooting.md            # Common issues and fixes
 ├── scripts/
-│   ├── 01-prepare-azure-local.ps1   # Register and prepare Azure Local
-│   ├── 02-deploy-avd-infrastructure.ps1  # Deploy AVD via Bicep
-│   ├── 03-configure-session-hosts.ps1    # Post-deploy session host config
-│   └── 04-validate-deployment.ps1   # Validate the full deployment
+│   ├── 01-prepare-azure-local.ps1       # Register and prepare Azure Local
+│   ├── 02-deploy-avd-infrastructure.ps1 # Deploy AVD via Bicep
+│   ├── 03-configure-session-hosts.ps1   # Post-deploy session host config
+│   ├── 04-validate-deployment.ps1       # Validate the full deployment
+│   ├── 05-collect-demo-artifacts.ps1    # Gather resource info for fallback
+│   └── 06-cleanup-demo.ps1             # Tear down demo resources
 ├── bicep/
-│   ├── main.bicep                   # Main deployment entry point
+│   ├── main.bicep                       # Main deployment entry point
 │   ├── modules/
-│   │   ├── avd-host-pool.bicep      # AVD host pool
-│   │   ├── avd-app-group.bicep      # AVD application group
-│   │   ├── avd-workspace.bicep      # AVD workspace
-│   │   └── avd-session-host.bicep   # AVD session hosts on Azure Local
+│   │   ├── avd-host-pool.bicep          # AVD host pool
+│   │   ├── avd-app-group.bicep          # AVD application group
+│   │   ├── avd-workspace.bicep          # AVD workspace
+│   │   └── avd-session-host.bicep       # AVD session hosts on Azure Local
 │   └── parameters/
-│       └── demo.bicepparam          # Demo parameter values
+│       └── demo.bicepparam              # Demo parameter values
+├── queries/                             # KQL queries for demos
+│   └── log-analytics/
+│       ├── fslogix-profile-load-times.kql
+│       ├── connection-diagnostics.kql
+│       ├── session-host-performance.kql
+│       └── active-sessions.kql
+├── assets/                              # Fallback screenshots, diagrams, recordings
+│   ├── diagrams/
+│   ├── screenshots/
+│   └── recordings/
 └── .github/
     └── workflows/
-        └── validate.yml             # Bicep linting / what-if validation
+        └── validate.yml                 # Bicep linting / what-if validation
 ```
 
 ---
@@ -130,8 +152,22 @@ cd mms_2026_avd_demo
 
 - [Prerequisites](docs/01-prerequisites.md)
 - [Azure Local Setup](docs/02-azure-local-setup.md)
-- [AVD Deployment Guide](docs/03-avd-deployment.md)
-- [Demo Walkthrough](docs/04-demo-walkthrough.md)
+- [Image Pipeline](docs/03-image-pipeline.md)
+- [AVD Deployment Guide](docs/04-avd-deployment.md)
+- [FSLogix Configuration](docs/05-fslogix.md)
+- [GPU Setup](docs/06-gpu-setup.md)
+- [Monitoring](docs/07-monitoring.md)
+- [Troubleshooting](docs/08-troubleshooting.md)
+
+---
+
+## Presenter Materials
+
+- [Run of Show](presenter/run-of-show.md)
+- [Slide-to-Demo Map](presenter/slide-map.md)
+- [Fallback Plan](presenter/fallback-plan.md)
+- [Day-Of Checklist](presenter/day-of-checklist.md)
+- [Detailed Demo Guide](Demo-Guide-AVD-Azure-Local.md)
 
 ---
 
