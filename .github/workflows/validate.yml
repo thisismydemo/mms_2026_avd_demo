@@ -1,0 +1,45 @@
+name: Validate Bicep Templates
+
+on:
+  push:
+    branches: ["main", "copilot/**"]
+    paths:
+      - "bicep/**"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "bicep/**"
+  workflow_dispatch:
+
+jobs:
+  bicep-lint:
+    name: Bicep Lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Bicep CLI
+        run: |
+          curl -Lo bicep https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64
+          chmod +x bicep
+          sudo mv bicep /usr/local/bin/bicep
+          bicep --version
+
+      - name: Lint main.bicep
+        run: bicep lint bicep/main.bicep
+
+      - name: Lint modules
+        run: |
+          for f in bicep/modules/*.bicep; do
+            echo "Linting $f"
+            bicep lint "$f"
+          done
+
+      - name: Build (compile) all Bicep files
+        run: |
+          bicep build bicep/main.bicep --outfile /tmp/main.json
+          echo "Bicep build succeeded"
