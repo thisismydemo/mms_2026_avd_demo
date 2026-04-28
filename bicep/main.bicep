@@ -14,13 +14,13 @@ targetScope = 'resourceGroup'
 param location string = resourceGroup().location
 
 @description('Name of the AVD host pool.')
-param hostPoolName string = 'hp-mms-demo'
+param hostPoolName string = 'hp-avd-mms26-demo-eus-01'
 
 @description('Name of the AVD application group.')
-param appGroupName string = 'ag-mms-demo'
+param appGroupName string = 'ag-avd-mms26-demo-eus-01'
 
 @description('Name of the AVD workspace.')
-param workspaceName string = 'ws-mms-demo'
+param workspaceName string = 'ws-avd-mms26-demo-eus-01'
 
 @description('Resource ID of the Arc custom location for the Azure Local cluster.')
 param customLocationId string
@@ -51,7 +51,7 @@ param sessionHostCount int = 2
 
 @description('Prefix for session host VM names.')
 @maxLength(11)
-param sessionHostNamePrefix string = 'vm-avd-demo'
+param sessionHostNamePrefix string = 'vm-avd-mms26-demo-eus'
 
 @description('Arc VM size for session hosts.')
 param vmSize string = 'Standard_D4s_v3'
@@ -64,13 +64,17 @@ param localAdminUsername string = 'azureuser'
 param localAdminPassword string
 
 @description('Name of the Log Analytics workspace for AVD Insights.')
-param logAnalyticsWorkspaceName string = 'law-avd-demo'
+param logAnalyticsWorkspaceName string = 'log-avd-mms26-demo-eus-01'
 
-@description('Tags to apply to all resources.')
+@description('Tags to apply to all resources. See STANDARDS.md for required tags.')
 param tags object = {
-  environment: 'demo'
-  session: 'MMS-MOA-2026'
-  technology: 'AVD-AzureLocal'
+  Demo:        'AVD Anywhere'
+  Conference:  'MMSMOA 2026'
+  Owner:       'Kristopher Turner'
+  Environment: 'Demo'
+  CostCenter:  'MMSMOA2026'
+  ManagedBy:   'GitHub Copilot'
+  Repository:  'https://github.com/thisismydemo/mms_2026_avd_demo'
 }
 
 // ---------------------------------------------------------------------------

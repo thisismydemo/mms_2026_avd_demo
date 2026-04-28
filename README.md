@@ -1,7 +1,7 @@
 # MMS MOA 2026 – Azure Virtual Desktop on Azure Local
 
-> **Session Demo Repository**  
-> Midwest Management Summit (MMS) MOA 2026  
+> **Session Demo Repository**
+> Midwest Management Summit (MMS) MOA 2026
 > Topic: *Azure Virtual Desktop on Azure Local*
 
 ---
@@ -79,6 +79,43 @@ mms_2026_avd_demo/
 | **PowerShell** | Automation and configuration scripts |
 | **Entra ID (Azure AD)** | Identity and access management |
 | **Azure Monitor / Insights** | Monitoring and diagnostics |
+
+---
+
+## Supporting Infrastructure vs. Demo Content
+
+This repo separates **what must be running before the session starts** from **what is deployed or shown live**.
+
+### Supporting Infrastructure — Deploy Before the Session
+
+These components must be deployed and validated **days before** MMS MOA 2026. They are not live-deployed on stage.
+
+| Component | Location | Purpose |
+|---|---|---|
+| Azure Local cluster (`tplabs-clus01`) | Pre-existing — do not redeploy | Provides the on-premises compute substrate |
+| SOFS cluster (`sofs-mms26-01`) | `sofs/` in this repo | FSLogix profile storage (\\sofsap-mms26-01\profiles) |
+
+```
+# Pre-session deployment order:
+# 1. Verify tplabs-clus01 is registered and healthy
+# 2. Fill in sofs/variables.yml (see sofs/README.md for placeholder list)
+# 3. Deploy SOFS
+.\sofs\deploy-sofs.ps1
+# 4. Validate SOFS share is accessible
+Test-Path '\\sofsap-mms26-01\profiles'
+```
+
+### Demo Content — Deployed During / Shown Live
+
+These are deployed live on stage (or validated live), using the supporting infra above.
+
+| Component | Script / Template | When |
+|---|---|---|
+| AVD host pool, app group, workspace | `bicep/main.bicep` → `scripts/02-deploy-avd-infrastructure.ps1` | Live deploy |
+| Session hosts (2× Win11 AVD) | `bicep/modules/avd-session-host.bicep` | Live deploy |
+| FSLogix profile load demo | `queries/log-analytics/fslogix-profile-load-times.kql` | Live query |
+| Connection diagnostics | `queries/log-analytics/connection-diagnostics.kql` | Live query |
+| AVD Insights dashboard | Portal walkthrough | Live walkthrough |
 
 ---
 

@@ -1,11 +1,16 @@
 # Azure credentials / secrets
 *.env
 *.env.*
+env.json
 *.pfx
 *.pem
 *.key
 local.settings.json
 appsettings.*.json
+
+# SOFS supporting infrastructure config (contains secrets / IPs)
+sofs/variables.yml
+sofs/*.yml
 
 # PowerShell
 *.ps1xml
