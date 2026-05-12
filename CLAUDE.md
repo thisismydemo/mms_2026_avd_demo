@@ -2,14 +2,17 @@
 
 ## What this repo is
 
-Infrastructure-as-Code repo in the thisismydemo organization. Contains Bicep or Terraform definitions managed under the HCS platform.
+> **Session Demo Repository**
+> Midwest Management Summit (MMS) MOA 2026
+> Topic: *Azure Virtual Desktop on Azure Local*
 
 ---
 
 ## ADO project details
 
 - **ADO org:** https://dev.azure.com/hybridcloudsolutions
-- **ADO project:** thisismydemo
+- **ADO project:** This Is My Demo
+- **Area path:** Platform Engineering\Onboarding
 - **Work item format:** `AB#<id>` in commit messages and PR descriptions
 
 ---
@@ -28,7 +31,7 @@ This repo follows all HCS platform standards defined in the Platform Engineering
 | Claude Code | [docs/standards/claude-code.md](https://dev.azure.com/hybridcloudsolutions/Platform%20Engineering/_git/Platform%20Engineering?path=/docs/standards/claude-code.md) |
 
 Key rules:
-- All scripts: PowerShell 7+ only. `#Requires -Version 7.0`, `Set-StrictMode -Version Latest`, `\Stop = 'Stop'`.
+- All scripts: PowerShell 7+ only. `#Requires -Version 7.0`, `Set-StrictMode -Version Latest`, ` $ErrorActionPreference = 'Stop'`.
 - All docs: Markdown only. No Word documents in any repo.
 - Commit format: `type(scope): short description` — types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`
 - No secrets, tokens, or credentials committed to any file.
@@ -39,14 +42,76 @@ Key rules:
 
 | Fact | Value |
 |---|---|
-| Primary language | Bicep / Terraform |
+| Primary language | Bicep / Terraform (HCL) |
 | GitHub org | thisismydemo |
 | Azure login | kris@hybridsolutions.cloud |
 | Key Vault | kv-hcs-vault-01 |
 
-Load environment before starting a session:
+### Environment variables expected
+
+| Variable | Source | Purpose |
+|---|---|---|
+| `AZURE_SUBSCRIPTION_ID` | kv-hcs-vault-01 via Load-HCSEnvironment.ps1 | Azure CLI subscription context |
+| `AZURE_DEVOPS_EXT_PAT` | kv-hcs-vault-01 via Load-HCSEnvironment.ps1 | ADO CLI (`az boards`, `az devops`) |
+Load before starting a session:
 ```powershell
 . E:\git\platform\scripts\Load-HCSEnvironment.ps1
+```
+
+### Build and test commands
+
+```
+az deployment group create --resource-group <rg> --template-file main.bicep --parameters @params.json
+```
+
+---
+
+## Repo structure
+
+```
+mms_2026_avd_demo/
+├── .claude/
+    └── settings.json
+├── .github/
+    └── workflows/
+├── assets/
+    ├── diagrams/
+    ├── recordings/
+    ├── screenshots/
+    └── README.md
+├── bicep/
+    ├── modules/
+    ├── parameters/
+    └── main.bicep
+├── docs/
+    ├── 01-prerequisites.md
+    ├── 02-azure-local-setup.md
+    ├── 03-avd-deployment.md
+    ├── 03-image-pipeline.md
+    └── 04-demo-walkthrough.md
+├── presenter/
+    ├── day-of-checklist.md
+    ├── fallback-plan.md
+    ├── run-of-show.md
+    └── slide-map.md
+├── queries/
+    └── log-analytics/
+├── scripts/
+    ├── 00-load-demo-env.ps1
+    ├── 01-prepare-azure-local.ps1
+    ├── 02-deploy-avd-infrastructure.ps1
+    ├── 03-configure-session-hosts.ps1
+    └── 04-validate-deployment.ps1
+├── sofs/
+    ├── deploy-sofs.ps1
+    └── README.md
+├── .gitignore
+├── CLAUDE.md
+├── Demo-Guide-AVD-Azure-Local.md
+├── env.sample.json
+├── LICENSE
+├── README.md
+└── STANDARDS.md
 ```
 
 ---
@@ -59,16 +124,24 @@ Load environment before starting a session:
 - `git add`, `git commit`, `git push`
 - `gh issue`, `gh pr`, `gh run` CLI commands
 - `az` CLI read operations: `az ... show`, `az ... list`
-- `bicep build` and Terraform `plan` (read-only passes)
+- `bicep build` and Terraform `init` + `plan` (read-only passes only)
 
 **Always confirm before:**
-- Any operation that modifies Azure resources
-- Installing or upgrading dependencies
+- Creating or deleting Azure resources
+- Any `az` CLI write operation that modifies Azure state
 - Running destructive operations
 - Making API calls to external services
 - `az deployment` commands
 - `terraform apply`
 - Any write to Azure state
+
+---
+
+## Subagents available in this repo
+
+- `mms_2026_avd_demo-engineer` (model: sonnet) — Expert in `mms_2026_avd_demo`: deep knowledge of this repo's structure, conventions, and development workflow.
+
+User-level agents (available in every repo session): `triage-lookup`, `markdown-prose-editor`, `azurelocal-domain-expert`, `mkdocs-material-doctor`, `turner-module-scaffold-engineer`, `mms-2026-demo-presenter`.
 
 ---
 
